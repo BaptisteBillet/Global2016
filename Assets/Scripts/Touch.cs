@@ -26,6 +26,8 @@ public class Touch : MonoBehaviour {
 
     public Gradient[] Gradients = new Gradient[4];
 
+    public GameObject Score;
+
     // Use this for initialization
     void Start () {
 	}
@@ -46,6 +48,7 @@ public class Touch : MonoBehaviour {
                     m_HypnoticInstance = Instantiate(m_HypnoticPrefab, new Vector3(Input.mousePosition.x, Input.mousePosition.z,0), Quaternion.identity) as PlaygroundParticlesC;
                     StartCoroutine(Effects());
 
+                Score.SetActive(true);
                     
                 }
 

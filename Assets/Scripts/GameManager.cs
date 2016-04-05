@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public byte m_seconds;
     private byte m_minutes;
     private byte m_hours;
+    private int m_score = 0;
 
     public GameObject[] m_ImagePlot = new GameObject[30];
 
@@ -43,15 +44,11 @@ public class GameManager : MonoBehaviour {
 
     public GameObject m_Intro;
 
-    public GameObject[] m_Events;
+    public GameObject m_BestScore;
 
 	// Use this for initialization
 	void Start ()
     {
-        foreach(GameObject _go in m_Events)
-        {
-            _go.SetActive(false);
-        }
 
 
         m_CanPlay = !m_Intro.activeInHierarchy;
@@ -66,21 +63,15 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(WriteText("I'm not doing anything, but who does?"));
         m_TextSentencesAnimator.SetTrigger("Appear");
 
-
-        ChangeEvent();
-
 	}
 	
-    void ChangeEvent()
-    {
-        m_Events[Random.Range(0, m_Events.Length + 1)].SetActive(true);
-    }
 
     void Initialization()
     {
         m_seconds=0;
         m_minutes=0;
         m_hours=0;
+        m_score = 0;
 
         foreach (GameObject go in m_ImagePlot)
         {
@@ -102,6 +93,13 @@ public class GameManager : MonoBehaviour {
     void AddSeconds()
     {
         m_seconds++;
+        m_score++;
+
+        if(m_score>PlayerPrefs.GetInt("S1",0))
+        {
+            m_BestScore.SetActive(true);
+        }
+
 
         if(m_seconds>59)
         {
@@ -198,11 +196,44 @@ public class GameManager : MonoBehaviour {
 
     void End()
     {
-        foreach(GameObject _go in m_Events)
+        PlayerPrefs.SetInt("Score", m_score);
+
+        //Get
+        int s1 = PlayerPrefs.GetInt("S1",0);
+        int s2 = PlayerPrefs.GetInt("S2", 0);
+        int s3 = PlayerPrefs.GetInt("S3", 0);
+        int s4 = PlayerPrefs.GetInt("S4", 0);
+        int s5 = PlayerPrefs.GetInt("S5", 0);
+
+        if(m_score>s1)
         {
-            _go.SetActive(false);
-            StopAllCoroutines();
+            s1 = m_score;
         }
+        else if(m_score>s2)
+        {
+            s2 = m_score;
+        }
+        else if (m_score > s3)
+        {
+            s3 = m_score;
+        }
+        else if (m_score > s4)
+        {
+            s4 = m_score;
+        }
+        else if (m_score > s5)
+        {
+            s5 = m_score;
+        }
+
+        //Set
+        PlayerPrefs.SetInt("S1",s1);
+        PlayerPrefs.SetInt("S2",s2);
+        PlayerPrefs.SetInt("S3",s3);
+        PlayerPrefs.SetInt("S4",s4);
+        PlayerPrefs.SetInt("S5",s5);
+
+
     }
 
 }
